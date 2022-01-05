@@ -1,0 +1,87 @@
+\documentclass[20pt]{article}
+\usepackage{graphicx}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\begin{document}
+
+\title{%
+  CSE 344 - System Programming \\
+  \large Midterm Project}
+
+\author{Harun ALBAYRAK - 171044014}
+
+\maketitle
+
+\Large
+\section{How did I solve this problem?}
+Firstly, i checked number of arguments. If an argument flag is used more than one or not used at all, i printed an error and exit. \\
+Also if number of arguments are less than 2 or greater than 13, i printed an error and exit.\\
+If –n flag is less than 2, I printed an error and exit. \\
+If –v flag is less than 2, I printed an error and exit. \\
+If –c flag is less than 3, I printed an error and exit. \\
+If –b flag is less than t*c+1, I printed an error and exit. \\ 
+If –t flag is less than 1, I printed an error and exit. \\
+Also if the path of the input file is wrong, the program will not be executed.
+\\\\
+After check these situations, i create t + c + v processes with their arguments. Its arguments consist of some semaphore names and other variables. 
+\\\\
+After that, i put the processes into shared memory with their pid, number of switches, total switch, and fifo path which randomly chosen. 
+\\\\
+After that the main process waiting the all processes that it is just created.
+\\\\
+In Nurse Process; \\
+Firstly, i create semaphores in order to solve synchronization problems. And i find how many vaccines in the file. And i open the file in READ\_ONLY mode and read it character by character. \\
+While i read character by character, if the character is '1' i entered the "empty1" semaphore and "m\_sem" semaphore. I write to shared memory(buffer). And if the character is '2' i entered the "empty2" semaphore and "m\_sem" semaphore. I write to shared memory(buffer). When i exit, if the character is '1' i post to "m\_sem" semaphore and "full1" semaphore, and if the character is '2' i post to "m\_sem" semaphore and "full2" semaphore.
+\\\\
+In Vaccinator Process; \\
+Firstly, i keep a count number to check whether vaccine is finished. After that i am wait the semaphore "full1", "full2" and "m\_sem" semaphores. Secondly, i invite the citizen who will be vaccinated through fifos. After the request arrive to the fifo, the citizen is vaccinated by vaccinator.(Two vaccines at the same time). And the citizen's remaining vaccine that are kept in the shared memory is reduced by 1.
+\\\\
+In Citizen Process; \\
+Firstly, i create a fifo path in order to create fifo. After that i create a fifo in order to communicate with vaccinators. After creating, the fifo is opened. Each citizen enters a loop t times. In the loop the citizen wait a request through the fifo.
+\\\\
+\section{My Design Decisions}
+I create three struct as "Buffer", "Citizen" and "Request". 
+\\\\
+I use error check first mechanism.
+\\\\
+I use 7 semaphores for synchronization.
+\\\\
+I use fork and execv methods to create processes.
+\\\\
+I use pipes, shared memory, semaphores.
+\\\\
+\section{Requirements I achieved and which I have failed}
+I think I achieved almost all the requirements. However, I may not have been able to achieve some requirements.
+
+\section{My Files}
+171044014\_helper\_midterm.h $\Rightarrow$ The helper functions \\
+171044014\_func\_midterm.h $\Rightarrow$ The function definitions headers \\
+171044014\_func\_midterm.c $\Rightarrow$ The functions i have used \\
+171044014\_midterm.c $\Rightarrow$ The Main C File \\
+nurse.c $\Rightarrow$ C file for Nurse processes \\
+vaccinator.c $\Rightarrow$ C file for Vaccinator processes \\
+citizen.c $\Rightarrow$ C file for Citizen processes \\
+171044014\_report.pdf $\Rightarrow$ The Report PDF \\
+171044014\_report.tex $\Rightarrow$ The Report Latex file \\
+Makefile $\Rightarrow$ The Makefile \\
+
+\section{Some screenshots from the program}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{midterm_0.png}
+  \caption{First run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{midterm_1.png}
+  \caption{Second run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{midterm_2.png}
+  \caption{Third run}
+  \label{fig:code}
+\end{figure}
+
+\end{document}

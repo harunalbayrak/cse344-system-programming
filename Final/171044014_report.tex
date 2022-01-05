@@ -1,0 +1,116 @@
+\documentclass[20pt]{article}
+\usepackage{graphicx}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\begin{document}
+
+\title{%
+  CSE 344 - System Programming \\
+  \large Final}
+
+\author{Harun ALBAYRAK - 171044014}
+
+\maketitle
+
+\Large
+\section{How did I solve this problem?}
+
+Server:\\\\
+Firstly, i created a daemon process with fork().\\
+In the daemon process, first, i check the errors. If the number of arguments is not equal to 9, i print an error and exit.\\
+After that, i handle the command line arguments. First, i check whether it is incompatible or not every flag. 
+\\\\
+After that, i read the csv file and store its data in the Linked List. Its columns and rows are stored in separate linked lists. I implemented custom methods for optimization in linked list. In this way, the running time of the program is reduced.
+\\\\
+After reading the csv file I open a socket to accept the data. The socket uses TCP(Transmission Control Protocol).
+\\\\
+After opening the socket I create as many threads as the number of pool size in the command line. 
+\\\\
+The threads waits a connection and a query. After coming a query, firstly, the query is parsed. And if the query type is SELECT, server\_reader() function is called. If the query type is UPDATE server\_writer() function is called. There is a reader-writer paradigm in here. 
+\\\\
+I use condition variables and a mutex in order to solve reader-writer problem. 
+\\\\
+I keep time before server\_reader() or server\_writer() function and after server\_reader() or server\_writer() function. In this way, i find the time between them. This gives the runtime of query.  
+\\\\
+If the query type is SELECT i create the message which is sent to client in a separate function. If the query type is UPDATE i create the message in server\_writer() function.
+\\\\
+After creating the message, the message is sent to relevant client. And the thread waits a new query after it sleep 0.5 seconds.
+\\\\\\
+Client: \\\\
+In the client, first, i check the errors in the same way. If the number of arguments is not equal to 9, i print an error and exit. After that i check the flags and its arguments.
+\\\\
+After checking the errors and stored its arguments in a struct, i open a socket and i connect to a socket. And the query is sent to the socket.
+\\\\
+The server gets the query and creates a message. The message is sent to the client. The client prints it to the console.
+\\\\
+This is repeated until the queries are finished.\\\\
+
+\section{My Design Decisions}
+I create a 'ServerArguments' struct so that i store server's command line arguments.
+\\\\
+I create a 'ClientArguments' struct so that i store clients' command line arguments.
+\\\\
+I create a 'Query' struct so that i store the query's data.
+\\\\
+I create a 'Message' struct so that server sends to client.
+\\\\
+I create a 'QueryType' enum for 'Query' struct.
+\\\\
+I use some global variables to solve some issues.
+\\\\
+I use linked lists to store data in the csv file.\\
+Why?\\
+Because the data is appended to the linked list only constant( O(1) ) time.
+\\\\
+
+\section{Requirements I achieved and which I have failed}
+I think I achieved almost all the requirements. However, I may not have been able to achieve some requirements.
+\\
+\section{My Files}
+serverMain.c $\Rightarrow$ The Server Main C File \\
+serverFunctions.c $\Rightarrow$ The Server Functions \\
+serverFunctions.h $\Rightarrow$ The Server Functions' Headers \\
+clientMain.c $\Rightarrow$ The Client Main C File \\
+clientFunctions.c $\Rightarrow$ The Client Functions \\
+clientFunctions.h $\Rightarrow$ The Client Functions' Headers \\
+linkedList.c $\Rightarrow$ Linked List Functions \\
+linkedList.h $\Rightarrow$ Linked List Functions' Headers \\
+helper.c $\Rightarrow$ Helper Functions \\
+helper.h $\Rightarrow$ Helper Functions' Headers \\
+171044014\_report.pdf $\Rightarrow$ The Report PDF \\
+171044014\_report.tex $\Rightarrow$ The Report Latex file \\
+Makefile $\Rightarrow$ The Makefile \\
+
+\section{Some screenshots from the program}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{final_2.png}
+  \caption{The server}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{final_3.png}
+  \caption{Client 2}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{final_4.png}
+  \caption{Client 1}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{final_5.png}
+  \caption{Client 2}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{final_6.png}
+  \caption{Client 1}
+  \label{fig:code}
+\end{figure}
+
+\end{document}
+

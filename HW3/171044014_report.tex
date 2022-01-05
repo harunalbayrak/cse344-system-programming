@@ -1,0 +1,87 @@
+\documentclass[20pt]{article}
+\usepackage{graphicx}
+\begin{document}
+
+\title{%
+  CSE 344 - System Programming \\
+  \large Homework \#3}
+
+\author{Harun ALBAYRAK - 171044014}
+
+\maketitle
+
+\Large
+\section{How did I solve this problem?}
+Firstly, i checked number of arguments. If an argument flag is used more than one or not used at all, i printed an error and exit. \\
+If –b flag consist of negative number, I printed an error and exit. 
+\\\\
+After check these situations, i handle it the arguments in handleTheArgs() function.  It is also my important function. Firstly i open "fileWithFifoNames" file and i read line by line. While reading, I also put it into an array. 
+\\\\
+After that, i put the processes into shared memory with their pid, number of switches, total switch, and fifo path which randomly chosen. 
+\\\\
+I also increment by 1 at every creating process the named semaphore in order to check enough process to run program.
+\\\\
+After creating enough process to run program(Enough processes' number is number of line in the given file.), I check that whether the all processes' hands is empty. If so, i print an error and exit.
+\\\\
+After these phases, if the potato number(in -b flag) is zero, i created a FIFO and waiting for potatoes that the another processes sent. I use named semaphore at the beginning and at the end for synchronization. 
+\\\\
+If the potato number(in -b flag) is more than one, i send the potatoes to other processes. I use named semaphore at the beginning and at the end for synchronization too.  
+\\\\
+\section{My Design Decisions}
+I create two struct as "Process" and "Request". These structs are used by functions. Also shared memory keep pointer of "Process" struct.
+\\\\
+If all process are created with empty hands, the program is terminated.
+\\\\
+Similarly, If all process are created with potatoes, the program is terminated. ​
+\\\\
+\section{Requirements I achieved and which I have failed}
+I think I achieved almost all the requirements. However, I may not have been able to achieve some requirements.
+
+\section{My Files}
+171044014\_helper\_hw3.h $\Rightarrow$ The helper functions \\
+171044014\_hw3.c $\Rightarrow$ The Main C File \\
+171044014\_report.pdf $\Rightarrow$ The Report PDF \\
+171044014\_report.tex $\Rightarrow$ The Report Latex file \\
+Makefile $\Rightarrow$ The Makefile \\
+
+\section{Some screenshots from the program}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{hw3_0.png}
+  \caption{The file}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_1.png}
+  \caption{The process 1}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_2.png}
+  \caption{The process 2}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_3.png}
+  \caption{The process 3}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{hw3_4.png}
+  \caption{The process 1}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_5.png}
+  \caption{The process 2}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_9.png}
+  \caption{The process 3}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{hw3_6.png}
+  \caption{The process 1: Since all processes have potatoes the program is not work.}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_7.png}
+  \caption{The process 1: Since all processes have potatoes the program is not work.}
+  \label{fig:code}
+  \includegraphics[width=\linewidth]{hw3_8.png}
+  \caption{The process 1: Since all processes have potatoes the program is not work.}
+  \label{fig:code}
+\end{figure}
+
+\end{document}

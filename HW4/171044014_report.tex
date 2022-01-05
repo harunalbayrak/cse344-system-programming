@@ -1,0 +1,91 @@
+\documentclass[20pt]{article}
+\usepackage{graphicx}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\begin{document}
+
+\title{%
+  CSE 344 - System Programming \\
+  \large Homework \#4}
+
+\author{Harun ALBAYRAK - 171044014}
+
+\maketitle
+
+\Large
+\section{How did I solve this problem?}
+Firstly, i checked number of arguments. If number of arguments are not equal to 4, i printed an error and exit.\\
+Also if third argument is not a positive number(money), i printed an error and exit. \\
+And then i check whether the first and second argument is a valid file or not. 
+\\\\
+After check these situations, i find the number of student to hire. Then i store the student's values in a struct that name is 'student'.
+\\\\
+After that, i initiate semaphores that i need.
+\\\\
+After that i create student threads for each student. And then,
+\\\\
+In the Main Thread;\\
+I create a Thread H that will store the homeworks in a queue.
+I poll the queue and thanks to returned char value i select a student in order to hire.  
+The student is choosen if the money is enough. If it is not, the student thread is terminated.
+If all homeworks are finished, all student threads are terminated.
+\\\\
+In Student Thread;\\
+Firstly, i send the index of student while it was created. In this way, I find the student's values in the struct of 'student'. I find sleep time of the thread. And then i use a while loop that checks whether all homeworks are finished or not. And then the thread is WAIT state with the semaphore. (A semaphore is created for each student thread.) If the semaphore's value is incremented by main thread, the student thread does the homework. \\
+And the money is decremented by the thread and some variables is changed. Then, the thread is slept by 'sleep' function.
+\\\\
+\section{My Design Decisions}
+I create a 'student' struct so that i store student's data.
+\\\\
+I use a Queue Array in the main thread to store homeworks.
+\\\\
+I use semaphores in order to solve any synchronization issues.
+\\\\
+I use pthreads.
+\\\\
+I use some global variables to solve some issues.
+\\\\
+\section{Requirements I achieved and which I have failed}
+I think I achieved almost all the requirements. However, I may not have been able to achieve some requirements.
+\\
+\section{My Files}
+171044014\_helper\_hw4.h $\Rightarrow$ The helper functions \\
+171044014\_func\_hw4.h $\Rightarrow$ The function definitions headers \\
+171044014\_func\_hw4.c $\Rightarrow$ The functions i have used \\
+171044014\_hw4.c $\Rightarrow$ The Main C File \\
+171044014\_report.pdf $\Rightarrow$ The Report PDF \\
+171044014\_report.tex $\Rightarrow$ The Report Latex file \\
+Makefile $\Rightarrow$ The Makefile \\
+
+\section{Some screenshots from the program}
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{shw4_0.png}
+  \caption{First run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{shw4_1.png}
+  \caption{Second run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{shw4_2.png}
+  \caption{The file in the first and second run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{shw4_3.png}
+  \caption{Third run}
+  \label{fig:code}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\linewidth]{shw4_4.png}
+  \caption{The file in the third run}
+  \label{fig:code}
+\end{figure}
+
+\end{document}
